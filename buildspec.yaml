@@ -1,0 +1,19 @@
+version: 0.2
+   
+phases:
+  pre_build:
+    commands:
+      - echo "login into ecr"
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 467036924094.dkr.ecr.us-east-2.amazonaws.com
+    
+  build:
+    commands:
+      - echo "Building an docker image"      
+      - docker build -t testdfef .
+      - echo "tag an image"
+      - docker tag testdfef:latest 467036924094.dkr.ecr.us-east-2.amazonaws.com/testdfef:latest
+    
+  post_build:
+    commands:
+      - echo "image has been build"
+      - docker push 467036924094.dkr.ecr.us-east-2.amazonaws.com/testdfef:latest
